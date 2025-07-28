@@ -1700,6 +1700,7 @@
 
     <!-- Footer -->
     <footer>
+                        <button id="theme-toggle" class="cta-button">🌗 Toggle Theme</button>
         <div class="social-links">
             <a href="#" title="LinkedIn">💼</a>
             <a href="#" title="GitHub">💻</a>
@@ -1714,6 +1715,9 @@
 
     <script>
         // Smooth scrolling for navigation links
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+  document.body.classList.toggle('light-mode');
+});
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
