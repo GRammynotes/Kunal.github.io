@@ -27,15 +27,28 @@
             --dim-text: #B0C4DE;
             --accent: #0099FF;
             --glass-bg: rgba(255, 255, 255, 0.1);
+            --x: 50%;
+            --y: 50%;
         }
         
         [data-theme="light"] {
             /* Light theme overrides */
-            --bg-color: #F4F4F4;
-            --text-color: #111;
-            --dim-text: #555;
-            --accent: #0077CC;
-            --glass-bg: rgba(0, 0, 0, 0.05);
+            --bg-color: #FFFFFF;
+            --text-color: #222222;
+            --dim-text: #666666;
+            --accent: #1E90FF;
+            --glass-bg: rgba(255, 255, 255, 0.3);
+            /* Override nav for light mode */
+            nav {
+                background: rgba(255, 255, 255, 0.9) !important;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            }
+            .nav-links a {
+                color: var(--text-color);
+            }
+            #theme-toggle {
+                color: var(--accent);
+            }
         }
         
         body {
@@ -67,6 +80,18 @@
             background: linear-gradient(45deg, var(--accent), var(--dim-text), var(--accent));
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
+        }
+        
+        #cursor-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: radial-gradient(circle at var(--x) var(--y), var(--accent)33%, transparent 50%);
+            transition: background 0.1s ease-out;
         }
         
         @keyframes gradientShift {
@@ -586,6 +611,17 @@
             transform: translateY(0px);
         }
         
+        .slide-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+        
+        .slide-in.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
         @keyframes float {
             0% {
                 transform: translateY(100vh) scale(0);
@@ -602,6 +638,7 @@
 
 <body>
     <div class="matrix-bg"></div>
+    <div id="cursor-bg"></div>
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
@@ -666,7 +703,7 @@
         <div class="container">
             <h2 class="section-title">Technical Expertise</h2>
             <div class="skills-grid">
-                <div class="skill-category">
+                <div class="skill-category slide-in">
                     <h3>Programming Languages</h3>
                     <div class="skill-item">
                         <span>Java</span>
@@ -687,7 +724,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="skill-category">
+                <div class="skill-category slide-in">
                     <h3>Web Development</h3>
                     <div class="skill-item">
                         <span>HTML/CSS</span>
@@ -708,7 +745,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="skill-category">
+                <div class="skill-category slide-in">
                     <h3>Teaching & Mentoring</h3>
                     <div class="skill-item">
                         <span>Academic Coaching</span>
@@ -752,12 +789,12 @@
         <div class="container">
             <h2 class="section-title">My Projects</h2>
             <div class="services-grid">
-                <div class="service-card">
+                <div class="service-card slide-in">
                     <div class="service-icon">🧮</div>
                     <h3>Simple Calculator</h3>
                     <p>A calculator made with HTML, CSS & JS. Handles basic operations and input logic.</p>
                 </div>
-                <div class="service-card">
+                <div class="service-card slide-in">
                     <div class="service-icon">📝</div>
                     <h3>To-Do List</h3>
                     <p>Task management app built with JS DOM methods and dynamic UI rendering.</p>
@@ -796,37 +833,37 @@
         <div class="container">
             <h2 class="section-title">Professional Services</h2>
             <div class="services-grid">
-                <div class="service-card">
+                <div class="service-card slide-in">
                     <div class="service-icon">📚</div>
                     <h3>Academic Tutoring</h3>
                     <p>Comprehensive tutoring for HSC Physics, Chemistry, and Mathematics with proven results</p>
                     <div class="service-price">₹600-900/hour</div>
                 </div>
-                <div class="service-card">
+                <div class="service-card slide-in">
                     <div class="service-icon">🎯</div>
                     <h3>Competitive Exam Coaching</h3>
                     <p>Specialized preparation for JEE, MH-CET, NEET with strategic study plans and mock tests</p>
                     <div class="service-price">₹1000-1500/hour</div>
                 </div>
-                <div class="service-card">
+                <div class="service-card slide-in">
                     <div class="service-icon">💻</div>
                     <h3>Programming Mentorship</h3>
                     <p>Learn Java, Python, C++ with hands-on projects and coding best practices</p>
                     <div class="service-price">₹800-1200/hour</div>
                 </div>
-                <div class="service-card">
+                <div class="service-card slide-in">
                     <div class="service-icon">🌐</div>
                     <h3>Web Development Projects</h3>
                     <p>Custom website development using modern technologies and responsive design</p>
                     <div class="service-price">₹15,000-50,000</div>
                 </div>
-                <div class="service-card">
+                <div class="service-card slide-in">
                     <div class="service-icon">📄</div>
                     <h3>Portfolio Creation</h3>
                     <p>Professional resume and portfolio development for students and professionals</p>
                     <div class="service-price">₹3,000-8,000</div>
                 </div>
-                <div class="service-card">
+                <div class="service-card slide-in">
                     <div class="service-icon">🎓</div>
                     <h3>Study Plan Consulting</h3>
                     <p>Personalized academic roadmaps and study strategies for optimal performance</p>
@@ -905,6 +942,14 @@
         </div>
     </footer>
     <script>
+        // Cursor background tracking
+        window.addEventListener('mousemove', e => {
+            const x = (e.clientX / window.innerWidth) * 100 + '%';
+            const y = (e.clientY / window.innerHeight) * 100 + '%';
+            document.documentElement.style.setProperty('--x', x);
+            document.documentElement.style.setProperty('--y', y);
+        });
+
         // Theme Toggle Logic
         const toggle = document.getElementById('theme-toggle');
         const saved = localStorage.getItem('theme') || 'dark';
@@ -1004,12 +1049,18 @@
             entries.forEach(entry => {
                 if (!entry.isIntersecting) return;
                 entry.target.classList.add('appear');
+                if (entry.target.classList.contains('slide-in')) {
+                    entry.target.classList.add('show');
+                }
                 appearOnScroll.unobserve(entry.target);
             });
         }, appearOptions);
         sections.forEach(section => {
             section.classList.add('fade-section');
             appearOnScroll.observe(section);
+        });
+        document.querySelectorAll('.slide-in').forEach(card => {
+            appearOnScroll.observe(card);
         });
     </script>
 </body>
